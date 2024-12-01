@@ -22,3 +22,6 @@ go.work
 
 # Input of the puzzle
 input
+
+# Binaries
+aoc
