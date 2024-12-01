@@ -44,9 +44,34 @@ func main() {
 
 	distance := 0
 
-	for i, _ := range leftList {
+	for i := range leftList {
 		distance += int(math.Abs(float64(leftList[i] - rightList[i])))
 	}
 
 	fmt.Println("Part 1:", distance)
+
+	frequencyMap := make(map[int]int, 0)
+
+	for _, key := range rightList {
+		value, ok := frequencyMap[key]
+
+		switch {
+		case ok == true:
+			frequencyMap[key] = value + 1
+		default:
+			frequencyMap[key] = 1
+		}
+	}
+
+	similarityScore := 0
+
+	for _, number := range leftList {
+		value, ok := frequencyMap[number]
+
+		if ok {
+			similarityScore += number * value
+		}
+	}
+
+	fmt.Println("Part 2:", similarityScore)
 }
