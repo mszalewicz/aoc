@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+// Times:
+//     - part 1:  215µs
+//     - part 2:  137µs
+
 func main() {
 	content, err := os.ReadFile("input")
 
