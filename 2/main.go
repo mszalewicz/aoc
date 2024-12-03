@@ -46,10 +46,8 @@ func convertReports(lines []string, reports *[][]int) {
 			if err != nil {
 				log.Fatal(err)
 			}
-
 			report = append(report, value)
 		}
-
 		*reports = append(*reports, report)
 	}
 }
@@ -76,7 +74,6 @@ func isSafeReport(report []int) bool {
 
 func isSafeWithOneRemoval(report []int) bool {
 	for i := 0; i < len(report); i++ {
-
 		modifiedReport := make([]int, 0)
 		modifiedReport = append(modifiedReport, report[:i]...)
 		modifiedReport = append(modifiedReport, report[i+1:]...)
