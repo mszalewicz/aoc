@@ -72,20 +72,16 @@ func main() {
 				diagonalFromBottom := lettersArray[x-1][y+1] + lettersArray[x][y] + lettersArray[x+1][y-1]
 				diagonalFromBottomReversed := reverseString(diagonalFromBottom)
 
-				if x == 1 && y == 2 {
-					fmt.Println(diagonalFromTop, diagonalFromBottom)
-				}
-
 				if (re.MatchString(diagonalFromTop) || re.MatchString(diagonalFromTopReversed)) && (re.MatchString(diagonalFromBottom) || re.MatchString(diagonalFromBottomReversed)) {
 					result2 += 1
 				}
 			}
+
 		}
 	}
 
 	fmt.Println(result1)
 	fmt.Println(result2)
-
 }
 
 func isInBounds(x, y, maxX, maxY int) bool {
