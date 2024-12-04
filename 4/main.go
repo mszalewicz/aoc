@@ -55,7 +55,36 @@ func main() {
 	result1 += score(columns)
 	result1 += score(columnsReversed)
 
+	result2 := 0
+
+	re, err := regexp.Compile("MAS")
+
+	if err != nil {
+		log.Fatal()
+	}
+
+	for x := 1; x < len(lettersArray)-1; x++ {
+		for y := 1; y < len(lettersArray)-1; y++ {
+
+			if lettersArray[x][y] == "A" {
+				diagonalFromTop := lettersArray[x-1][y-1] + lettersArray[x][y] + lettersArray[x+1][y+1]
+				diagonalFromTopReversed := reverseString(diagonalFromTop)
+				diagonalFromBottom := lettersArray[x-1][y+1] + lettersArray[x][y] + lettersArray[x+1][y-1]
+				diagonalFromBottomReversed := reverseString(diagonalFromBottom)
+
+				if x == 1 && y == 2 {
+					fmt.Println(diagonalFromTop, diagonalFromBottom)
+				}
+
+				if (re.MatchString(diagonalFromTop) || re.MatchString(diagonalFromTopReversed)) && (re.MatchString(diagonalFromBottom) || re.MatchString(diagonalFromBottomReversed)) {
+					result2 += 1
+				}
+			}
+		}
+	}
+
 	fmt.Println(result1)
+	fmt.Println(result2)
 
 }
 
