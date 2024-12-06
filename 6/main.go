@@ -7,6 +7,7 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"sync"
 )
 
 type Moves struct {
@@ -34,7 +35,6 @@ func main() {
 
 	var currentPoint image.Point
 
-	// find starting point
 FindStartingPoint:
 	for y, line := range input {
 		for x := 0; x < len(line); x++ {
@@ -45,7 +45,7 @@ FindStartingPoint:
 		}
 	}
 
-	//originalCurrentPoint := currentPoint
+	originalCurrentPoint := currentPoint
 
 	type mark struct {
 		place     image.Point
@@ -58,6 +58,7 @@ FindStartingPoint:
 	maxX := len(input[0])
 	maxY := len(input)
 
+breakWhenOutOfBounds:
 	for {
 		if !slices.Contains(visited, currentPoint) {
 			visited = append(visited, currentPoint)
@@ -69,20 +70,78 @@ FindStartingPoint:
 			break
 		}
 
-		if input[currentPoint.Y][currentPoint.X] == "#" {
-			currentPoint = currentPoint.Sub(currentDirection)
-			currentDirection = switchDirection(currentDirection, moves)
-			currentPoint = currentPoint.Add(currentDirection)
+		for {
+			if input[currentPoint.Y][currentPoint.X] == "#" {
+				currentPoint = currentPoint.Sub(currentDirection)
+				currentDirection = switchDirection(currentDirection, moves)
+				currentPoint = currentPoint.Add(currentDirection)
 
-			if currentPoint.X < 0 || currentPoint.X >= maxX || currentPoint.Y < 0 || currentPoint.Y >= maxY {
+				if currentPoint.X < 0 || currentPoint.X >= maxX || currentPoint.Y < 0 || currentPoint.Y >= maxY {
+					break breakWhenOutOfBounds
+				}
+			} else {
 				break
 			}
+
 		}
 
 	}
 
 	fmt.Println("Part 1:", len(visited))
 
+	var wg sync.WaitGroup
+	result2 := 0
+
+	for _, newObstacle := range visited[1:] {
+		wg.Add(1)
+
+		go func(result2 *int, moves Moves, originalCurrentPoint image.Point, newObstacle image.Point) {
+			visitedInNewReality := []mark{}
+			currentDirection := moves.up
+			currentPoint := originalCurrentPoint
+			guardStartingPosition := originalCurrentPoint
+
+		breakWhenOutOfBounds:
+			for {
+				if slices.Contains(visitedInNewReality, mark{currentPoint, currentDirection}) {
+
+					if newObstacle.X != guardStartingPosition.X || newObstacle.Y != guardStartingPosition.Y {
+						*result2++
+						break
+					}
+				}
+
+				currentMotion := mark{currentPoint, currentDirection}
+				visitedInNewReality = append(visitedInNewReality, currentMotion)
+
+				currentPoint = currentPoint.Add(currentDirection)
+
+				if currentPoint.X < 0 || currentPoint.X >= maxX || currentPoint.Y < 0 || currentPoint.Y >= maxY {
+					break
+				}
+
+				for {
+					if input[currentPoint.Y][currentPoint.X] == "#" || (newObstacle.X == currentPoint.X && newObstacle.Y == currentPoint.Y) {
+
+						currentPoint = currentPoint.Sub(currentDirection)
+						currentDirection = switchDirection(currentDirection, moves)
+						currentPoint = currentPoint.Add(currentDirection)
+
+						if currentPoint.X < 0 || currentPoint.X >= maxX || currentPoint.Y < 0 || currentPoint.Y >= maxY {
+							break breakWhenOutOfBounds
+						}
+					} else {
+						break
+					}
+				}
+			}
+			wg.Done()
+		}(&result2, moves, originalCurrentPoint, newObstacle)
+	}
+
+	wg.Wait()
+
+	fmt.Println("Part 2:", result2)
 }
 
 func switchDirection(currentDirection image.Point, moves Moves) image.Point {
