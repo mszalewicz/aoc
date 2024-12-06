@@ -21,6 +21,7 @@ func main() {
 	rules := make(map[int][]int, 0)
 	entries := make([][]int, 0)
 
+	// reorganize data from input
 	for _, line := range lines {
 		switch {
 		case strings.Contains(line, "|"):
