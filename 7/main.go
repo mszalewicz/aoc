@@ -55,8 +55,8 @@ func main() {
 			for _, currentResult := range currentResults {
 				r1 := currentResult + value
 				r2 := currentResult * value
-				// r3Text := strconv.Itoa(currentResult) + strconv.Itoa(value)
-				// r3, _ := strconv.Atoi(r3Text)
+				r3Text := strconv.Itoa(currentResult) + strconv.Itoa(value)
+				r3, _ := strconv.Atoi(r3Text)
 
 				if r1 <= key {
 					newResults = append(newResults, r1)
@@ -66,9 +66,9 @@ func main() {
 					newResults = append(newResults, r2)
 				}
 
-				// if r3 <= key {
-				// 	newResults = append(newResults, r3)
-				// }
+				if r3 <= key {
+					newResults = append(newResults, r3)
+				}
 			}
 			currentResults = newResults
 		}
