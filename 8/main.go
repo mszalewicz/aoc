@@ -33,9 +33,9 @@ func main() {
 	}
 
 	result1 := 0
-	// result2 := 0
+	result2 := 0
 	visited := []image.Point{}
-	// visited2 := []image.Point{}
+	visited2 := []image.Point{}
 
 	for _, stationType := range stations {
 		for i, coordinate := range stationType {
@@ -56,52 +56,48 @@ func main() {
 					}
 				}
 
-				// { // Part 2
-				// 	firstIteration := true
-				// 	antinodeX := 0
-				// 	antinodeY := 0
+				{ // Part 2
+					firstIteration := true
+					antinodeX := 0
+					antinodeY := 0
 
-				// 	for {
-				// 		if firstIteration {
-				// 			antinodeX = coordinate.X + 2*xd
-				// 			antinodeY = coordinate.Y + 2*yd
-				// 			firstIteration = false
-				// 		} else {
-				// 			antinodeX = antinodeX + xd
-				// 			antinodeY = antinodeY + yd
-				// 		}
+					for {
+						if firstIteration {
+							antinodeX = coordinate.X + 2*xd
+							antinodeY = coordinate.Y + 2*yd
+							firstIteration = false
+						} else {
+							antinodeX = antinodeX + xd
+							antinodeY = antinodeY + yd
+						}
 
-				// 		if (antinodeX == 0 && antinodeY == 45) || (coordinate.X == 0 && coordinate.Y == 45) || (toCompare.X == 0 && toCompare.Y == 45) {
-				// 			fmt.Println(string(station), antinodeX, antinodeY, coordinate.X, coordinate.Y, toCompare.X, toCompare.Y)
-				// 		}
+						if isInBounds(antinodeX, antinodeY, maxX, maxY) {
 
-				// 		if isInBounds(antinodeX, antinodeY, maxX, maxY) /*&& !slices.Contains(visited2, image.Pt(antinodeX, antinodeY))*/ {
+							if !slices.Contains(visited2, image.Pt(antinodeX, antinodeY)) {
+								visited2 = append(visited2, image.Pt(antinodeX, antinodeY))
+								result2++
+							}
 
-				// 			if !slices.Contains(visited2, image.Pt(antinodeX, antinodeY)) {
-				// 				visited2 = append(visited2, image.Pt(antinodeX, antinodeY))
-				// 				result2++
-				// 			}
+							if !slices.Contains(visited2, image.Pt(coordinate.X, coordinate.Y)) {
+								visited2 = append(visited2, image.Pt(coordinate.X, coordinate.Y))
+								result2++
+							}
 
-				// 			if !slices.Contains(visited2, image.Pt(coordinate.X, coordinate.Y)) {
-				// 				visited2 = append(visited2, image.Pt(coordinate.X, coordinate.Y))
-				// 				result2++
-				// 			}
-
-				// 			if !slices.Contains(visited2, image.Pt(toCompare.X, toCompare.Y)) {
-				// 				visited2 = append(visited2, image.Pt(toCompare.X, toCompare.Y))
-				// 				result2++
-				// 			}
-				// 		} else {
-				// 			break
-				// 		}
-				// 	}
-				// }
+							if !slices.Contains(visited2, image.Pt(toCompare.X, toCompare.Y)) {
+								visited2 = append(visited2, image.Pt(toCompare.X, toCompare.Y))
+								result2++
+							}
+						} else {
+							break
+						}
+					}
+				}
 			}
 		}
 	}
 
 	fmt.Println(result1)
-	// fmt.Println(result2)
+	fmt.Println(result2)
 }
 
 func isInBounds(x, y, maxX, maxY int) bool {
