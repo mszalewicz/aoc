@@ -82,3 +82,7 @@ func main() {
 	fmt.Println(end)
 	fmt.Println(result)
 }
+
+func isInBounds(x, y, maxX, maxY int) bool {
+	return x >= 0 && x <= maxX && y >= 0 && y <= maxY
+}
