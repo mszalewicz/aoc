@@ -33,6 +33,9 @@ func main() {
 		}
 	}
 
+	mapping2 := make([]string, len(mapping))
+	copy(mapping2, mapping)
+
 	fromStart := 0
 	fromEnd := len(mapping) - 1
 
@@ -73,5 +76,85 @@ func main() {
 		position++
 	}
 
-	fmt.Println(result)
+	fmt.Println("Part 1:", result)
+
+	// Idea behind part 2:
+	// - first find consecutive numbers of the same time from the end of the mapping
+	// - secondly find consecutive empty spaces with the same lenght as in previouse point
+	// - swap position between empty spaces and numbers from the end
+	// - continue from the smallest index of swapped numbers
+
+	transplantNumberStartPosition := len(mapping2) - 1
+	currentPosition := len(mapping2) - 1
+	previousType := ""
+	currentType := ""
+
+	for {
+		if currentPosition <= 0 {
+			break
+		}
+
+		if previousType == "" || previousType == "." {
+			previousType = mapping2[currentPosition]
+		}
+
+		if currentType == "" || currentType == "." {
+			currentType = mapping2[currentPosition]
+		}
+
+		if mapping2[transplantNumberStartPosition] == "." || currentType == "." {
+			transplantNumberStartPosition--
+			currentPosition--
+			continue
+		}
+
+		currentPosition--
+
+		if previousType != mapping2[currentPosition] {
+			emptySpotStart := 0
+			emptySpotLen := 0
+			for {
+				if mapping2[emptySpotStart+emptySpotLen] == "." {
+					emptySpotLen++
+
+					if transplantNumberStartPosition-emptySpotLen < 0 {
+						break
+					}
+
+					if emptySpotLen == transplantNumberStartPosition-currentPosition {
+						for i := range emptySpotLen {
+							mapping2[emptySpotStart+i], mapping2[transplantNumberStartPosition-i] = mapping2[transplantNumberStartPosition-i], mapping2[emptySpotStart+i]
+						}
+						transplantNumberStartPosition = transplantNumberStartPosition - emptySpotLen
+						currentPosition = transplantNumberStartPosition
+						previousType = mapping2[transplantNumberStartPosition]
+						currentType = mapping2[currentPosition]
+						break
+					}
+				} else if emptySpotStart >= transplantNumberStartPosition {
+					transplantNumberStartPosition = currentPosition
+					previousType = mapping2[currentPosition]
+					currentType = mapping2[currentPosition]
+					break
+				} else {
+					emptySpotStart += emptySpotLen + 1
+					emptySpotLen = 0
+				}
+			}
+		}
+	}
+
+	result2 := 0
+
+	for i, val := range mapping2 {
+		number, err := strconv.Atoi(val)
+
+		if err != nil {
+			continue
+		}
+
+		result2 += number * i
+	}
+
+	fmt.Println("Part 2:", result2)
 }
