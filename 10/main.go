@@ -64,25 +64,24 @@ func main() {
 
 	fmt.Println(result)
 
-	_ = validPoints2
 	// Part 2
-	// result2 := 0
+	result2 := 0
 
-	// for {
-	// 	if validPoints2.IsEmpty() {
-	// 		break
-	// 	}
+	for {
+		if validPoints2.IsEmpty() {
+			break
+		}
 
-	// 	point, _ := validPoints2.Dequeue()
+		point, _ := validPoints2.Dequeue()
 
-	// 	checkDirection(point.X, point.Y, point.X-1, point.Y, maxX, maxY, &terrain, &validPoints2, &result2)
-	// 	checkDirection(point.X, point.Y, point.X+1, point.Y, maxX, maxY, &terrain, &validPoints2, &result2)
-	// 	checkDirection(point.X, point.Y, point.X, point.Y-1, maxX, maxY, &terrain, &validPoints2, &result2)
-	// 	checkDirection(point.X, point.Y, point.X, point.Y+1, maxX, maxY, &terrain, &validPoints2, &result2)
+		checkDirection(point.X, point.Y, point.X-1, point.Y, maxX, maxY, &terrain, &validPoints2, &result2)
+		checkDirection(point.X, point.Y, point.X+1, point.Y, maxX, maxY, &terrain, &validPoints2, &result2)
+		checkDirection(point.X, point.Y, point.X, point.Y-1, maxX, maxY, &terrain, &validPoints2, &result2)
+		checkDirection(point.X, point.Y, point.X, point.Y+1, maxX, maxY, &terrain, &validPoints2, &result2)
 
-	// }
+	}
 
-	// fmt.Println(result2)
+	fmt.Println(result2)
 }
 
 func checkDirectionWithoutRepetition(currentX int, currentY int, x int, y int, maxX int, maxY int, terrain *[][]int, pointsQueue *Queue[image.Point], visited *[]image.Point, result *int) {
