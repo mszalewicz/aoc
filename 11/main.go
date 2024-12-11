@@ -73,7 +73,6 @@ func main() {
 	fmt.Println("Part 1:", list.Size)
 
 	// Part 2
-	// numberOfBlinks = 75
 	stones := map[string]int{}
 
 	for _, value := range input {
@@ -112,7 +111,6 @@ func main() {
 				newStones[strconv.Itoa(number*2024)] += val
 			}
 		}
-
 		stones = newStones
 	}
 
