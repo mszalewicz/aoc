@@ -8,6 +8,7 @@ type Node[T any] struct {
 
 type LinkedList[T any] struct {
 	Head *Node[T]
+	Size int
 }
 
 func (list *LinkedList[T]) Add(val T) {
@@ -24,6 +25,5 @@ func (list *LinkedList[T]) Add(val T) {
 		current.Next = newNode
 		current.Previous = previous
 	}
+	list.Size++
 }
-
-// func (list *LinkedList[T]) Insert(T)
