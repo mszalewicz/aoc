@@ -17,6 +17,7 @@ func main() {
 		list.Add(value)
 	}
 
+	// Part 1
 	numberOfBlinks := 25
 
 	for range numberOfBlinks {
@@ -69,5 +70,57 @@ func main() {
 		}
 	}
 
-	fmt.Println(list.Size)
+	fmt.Println("Part 1:", list.Size)
+
+	// Part 2
+	// numberOfBlinks = 75
+	stones := map[string]int{}
+
+	for _, value := range input {
+		stones[value] += 1
+	}
+
+	for range 75 {
+		newStones := map[string]int{}
+
+		for key, val := range stones {
+			switch {
+			case key == "0":
+				newStones["1"] += val
+			case len(key)%2 == 0:
+				leftPart := key[:len(key)/2]
+				rightPart := key[(len(key) / 2):]
+
+				newStones[leftPart] += val
+
+				countZeros := 0
+				for _, char := range rightPart {
+					if string(char) == "0" {
+						countZeros++
+					} else {
+						break
+					}
+				}
+
+				if countZeros == len(rightPart) {
+					newStones["0"] += val
+				} else {
+					newStones[rightPart[countZeros:]] += val
+				}
+			default:
+				number, _ := strconv.Atoi(key)
+				newStones[strconv.Itoa(number*2024)] += val
+			}
+		}
+
+		stones = newStones
+	}
+
+	result2 := 0
+
+	for _, value := range stones {
+		result2 += value
+	}
+
+	fmt.Println("Part 2:", result2)
 }
