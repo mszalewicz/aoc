@@ -22,16 +22,16 @@ func main() {
 		prizeX += 10000000000000
 		prizeY += 10000000000000
 
-		determinant := aX*bY - bX*aY
-		determinantX := prizeX*bY - bX*prizeY
-		determinantY := aX*prizeY - prizeX*aY
+		determinant  := aX * bY - bX * aY
+		determinantX := prizeX * bY - bX * prizeY
+		determinantY := aX * prizeY - prizeX * aY
 
 		determinantIsNonzero := (determinant != 0)
-		xSolutionIsInteger := (determinantX % determinant == 0)
-		ySolutionIsInteger := (determinantY % determinant == 0)
+		xSolutionIsInteger   := (determinantX % determinant == 0)
+		ySolutionIsInteger   := (determinantY % determinant == 0)
 
 		if determinantIsNonzero && xSolutionIsInteger && ySolutionIsInteger {
-			result += (determinantX/determinant)*3 + (determinantY / determinant)
+			result += (determinantX / determinant) * 3 + (determinantY / determinant)
 		}
 	}
 
