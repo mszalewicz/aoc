@@ -22,6 +22,7 @@ func main() {
 		prizeX += 10000000000000
 		prizeY += 10000000000000
 
+		// Cramer's rule:
 		determinant  := aX * bY - bX * aY
 		determinantX := prizeX * bY - bX * prizeY
 		determinantY := aX * prizeY - prizeX * aY
