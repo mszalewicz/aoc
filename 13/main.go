@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -13,47 +12,26 @@ func main() {
 
 	result := 0
 
-mainLoop:
 	for i := 0; i < len(lines); i += 4 {
-		ax, _ := strconv.Atoi(lines[i][12:14])
-		ay, _ := strconv.Atoi(lines[i][18:20])
+		var aX, aY, bX, bY, prizeX, prizeY int
 
-		bx, _ := strconv.Atoi(lines[i+1][12:14])
-		by, _ := strconv.Atoi(lines[i+1][18:20])
+		fmt.Sscanf(lines[i+0], "Button A: X+%d, Y+%d", &aX, &aY)
+		fmt.Sscanf(lines[i+1], "Button B: X+%d, Y+%d", &bX, &bY)
+		fmt.Sscanf(lines[i+2], "Prize: X=%d, Y=%d", &prizeX, &prizeY)
 
-		prize := strings.Split(lines[i+2], ",")
+		prizeX += 10000000000000
+		prizeY += 10000000000000
 
-		leftPart := strings.Split(prize[0], "=")
-		rightPart := strings.Split(prize[1], "=")
+		determinant := aX*bY - bX*aY
+		determinantX := prizeX*bY - bX*prizeY
+		determinantY := aX*prizeY - prizeX*aY
 
-		prizex, _ := strconv.Atoi(leftPart[1])
-		prizey, _ := strconv.Atoi(rightPart[1])
+		determinantIsNonzero := (determinant != 0)
+		xSolutionIsInteger := (determinantX % determinant == 0)
+		ySolutionIsInteger := (determinantY % determinant == 0)
 
-		// fmt.Println(ax, ay, bx, by, prizex, prizey)
-
-		countA := 1
-		countB := 1
-
-		for {
-			for {
-				if ax*countA+bx*countB == prizex && ay*countA+by*countB == prizey {
-					result += countA*3 + countB
-					continue mainLoop
-				}
-
-				if ax*countA+bx*countB > prizex || ay*countA+by*countB > prizey {
-					break
-				}
-
-				countB++
-			}
-
-			if ax*countA >= prizex || ay*countA >= prizey {
-				break
-			}
-
-			countA++
-			countB = 1
+		if determinantIsNonzero && xSolutionIsInteger && ySolutionIsInteger {
+			result += (determinantX/determinant)*3 + (determinantY / determinant)
 		}
 	}
 
